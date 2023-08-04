@@ -1,20 +1,31 @@
 properties([parameters([choice(choices: ['main', 'dev'], name: 'branch')])])
 
 pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                // Get some code from a GitHub repository
-                // git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git
-                sh 'echo "given branch is $branch"'
-
-                // Run Maven on a Unix agent.
-                // sh "mvn -Dmaven.test.failure.ignore=true clean package"
-
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
-            }
-        }
+  agent any
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+  }
+  stages {
+    stage('Build') {
+      steps {
+      	git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git'
+        sh 'docker build -t nginx/nginx-docker .'
+      }
     }
+    stage('Login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
+    }
+    stage('Push') {
+      steps {
+        sh 'docker push nginx/nginx-docker'
+      }
+    }
+  }
+  post {
+    always {
+      sh 'docker logout'
+    }
+  }
 }
