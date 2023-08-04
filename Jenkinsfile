@@ -1,10 +1,7 @@
+properties([parameters([choice(choices: ['main', 'dev'], name: 'branch')])])
+
 pipeline {
     agent any
-
-    options(
-        [parameters([choice(choices: ['main', 'dev'], name: 'branch')])]
-    )
-
     stages {
         stage('Build') {
             steps {
