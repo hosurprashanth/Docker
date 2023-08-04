@@ -1,11 +1,16 @@
 pipeline {
     agent any
 
+    properties(
+        [parameters([choice(choices: ['main', 'dev'], name: 'branch')])]
+    )
+
     stages {
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
-                git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git'
+                // git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git
+                sh 'echo "given branch is $branch"'
 
                 // Run Maven on a Unix agent.
                 // sh "mvn -Dmaven.test.failure.ignore=true clean package"
