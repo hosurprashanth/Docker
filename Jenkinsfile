@@ -10,12 +10,14 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-      	git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git'
-        sh 'docker build -t nginx/nginx-docker .'
+        sh "echo hello world"
+      	// git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git'
+        // sh 'docker build -t nginx/nginx-docker .'
       }
     }
     stage('Login') {
       steps {
+        sh "echo $DOCKERHUB_CREDENTIALS, $DOCKERHUB_CREDENTIALS_USR, $DOCKERHUB_CREDENTIALS_PSW"
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
     }
