@@ -1,7 +1,7 @@
 properties([parameters([choice(choices: ['main', 'dev'], name: 'branch')])])
 
 pipeline {
-  agent any
+  agent label1
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
