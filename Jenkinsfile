@@ -10,9 +10,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh "echo hello world"
       	// git branch: "main", url: 'https://github.com/hosurprashanth/Docker.git'
-        // sh 'docker build -t nginx/nginx-docker .'
+        sh 'docker build -t babbi87/prashanth_nginx:10 .'
       }
     }
     stage('Login') {
@@ -23,13 +22,14 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push nginx/nginx-docker'
+        sh 'docker push babbi87/prashanth_nginx:10'
       }
     }
   }
   post {
     always {
       sh 'docker logout'
+      cleanWs()
     }
   }
 }
